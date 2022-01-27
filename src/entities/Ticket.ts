@@ -1,12 +1,11 @@
-import PaymentData from "@/interfaces/ticketData";
 import {
   BaseEntity,
   Entity,
   PrimaryGeneratedColumn,
   Column,
-  OneToOne,
+  OneToMany,
 } from "typeorm";
-import User from "./User";
+import Subscription from "./Subscription";
 
 @Entity("tickets")
 export default class Ticket extends BaseEntity {
@@ -25,7 +24,6 @@ export default class Ticket extends BaseEntity {
   @Column()
   userId: number;
 
-  static async createOrUpdate(data: PaymentData) {
-    const ticket = await this.findOne({ where: { userId: data.userId } });
-  }
+  @OneToMany(() => Subscription, (subscription) => subscription.ticket)
+  subscriptions: Subscription[];
 }
